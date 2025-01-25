@@ -1,0 +1,41 @@
+= DEMO PROJECT API Documentation
+:toc: left
+:toclevels: 3
+
+This is an example output for a service running at http://localhost:8080:
+
+The data which we can see as part of documentation will loaded from MockMvc Test case data
+
+== GET ALL USERS API Example
+
+.request
+include::{snippets}/testGetAllUsers/http-request.adoc[]
+
+.response
+include::{snippets}/testGetAllUsers/http-response.adoc[]
+
+== GET USER BY ID API Example
+
+.request
+include::{snippets}/testGetUserById/http-request.adoc[]
+
+.response
+include::{snippets}/testGetUserById/http-response.adoc[]
+
+== CREATE A USER API Example
+
+.request
+include::{snippets}/testCreateUser/http-request.adoc[]
+
+.response
+include::{snippets}/testCreateUser/http-response.adoc[]
+
+
+== DELETE A USERS API Example
+
+.request
+include::{snippets}/testDeleteUserById/http-request.adoc[]
+
+.response
+include::{snippets}/testDeleteUserById/http-response.adoc[]
+

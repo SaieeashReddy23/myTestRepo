@@ -1,0 +1,26 @@
+[
+  {
+    "id": "67946e658552692fae90b167",
+    "name": "Arun kumar",
+    "email": "arun@gmail.com",
+    "age": 19
+  },
+  {
+    "id": "67946e818552692fae90b169",
+    "name": "Dhoni mahendra",
+    "email": "dhoni@gmail.com",
+    "age": 29
+  },
+  {
+    "id": "67946e718552692fae90b168",
+    "name": "Keshav maharaj",
+    "email": "keshav@gmail.com",
+    "age": 19
+  },
+  {
+    "id": "67946599e24f626a2cf929c4",
+    "name": "Saieeash",
+    "email": "sai@example.com",
+    "age": 30
+  }
+]
