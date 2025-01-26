@@ -31,18 +31,18 @@ public class UserController {
     @GetMapping
     public ResponseEntity<PaginatedResponseDTO<UserResponseDTO>> getAllUsers(@Min(value = 0 , message = "Page number should not be negative") @RequestParam(defaultValue = "0") int page,
                                                                              @Min(value = 5 , message = "Min page size should be greater than 5")  @RequestParam(defaultValue = "10") int size) {
-        log.info("DEMO project | CorrelationId : {} | Get request for /api/users | Request - pageNumber : {} , pageSize : {}", MDC.get(Constants.CORRELATIONID) ,page , size);
+        log.info("DEMO project | Get request for /api/users | Request - pageNumber : {} , pageSize : {}", page , size);
         PaginatedResponseDTO<UserResponseDTO> paginatedResponseDTO = userService.getAllUsers(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC , "name")));
-        log.info("DEMO project | CorrelationId : {} | Get request for /api/users | Response - {}", MDC.get(Constants.CORRELATIONID) , paginatedResponseDTO.toString());
+        log.info("DEMO project | Get request for /api/users | Response - {}", paginatedResponseDTO.toString());
         return ResponseEntity.ok(paginatedResponseDTO);
     }
 
     // Get user by ID
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
-        log.info("DEMO project | CorrelationId : {} | Get request for /api/users/{} | Request - pathVariable - id : {} ", MDC.get(Constants.CORRELATIONID) , id , id );
+        log.info("DEMO project | Get request for /api/users/{} | Request - pathVariable - id : {} ", id , id );
         UserResponseDTO user = userService.getUserById(id);
-        log.info("DEMO project | CorrelationId : {} | Get request for /api/users/{} | Response - {} ",  MDC.get(Constants.CORRELATIONID) ,  id , user != null ? user.toString() : " Not found " );
+        log.info("DEMO project | Get request for /api/users/{} | Response - {} ",  id , user != null ? user.toString() : " Not found " );
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
@@ -54,18 +54,18 @@ public class UserController {
         user.setName(userRequestDTO.getName());
         user.setEmail(userRequestDTO.getEmail());
         user.setAge(userRequestDTO.getAge());
-        log.info("DEMO project | CorrelationId : {} | Post request for /api/users | Request - {} ",  MDC.get(Constants.CORRELATIONID) ,  userRequestDTO.toString() );
+        log.info("DEMO project  | Post request for /api/users | Request - {} ",  userRequestDTO.toString() );
         UserResponseDTO createdUser = userService.createUser(user);
-        log.info("DEMO project | CorrelationId : {} | Get request for /api/users | Response - {} ",  MDC.get(Constants.CORRELATIONID) ,  createdUser.toString() );
+        log.info("DEMO project  | Get request for /api/users | Response - {} ",  createdUser.toString() );
         return ResponseEntity.ok(createdUser);
     }
 
     // Delete user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable String id) {
-        log.info("DEMO project | CorrelationId : {} | Delete request for /api/users/{} | Request - pathVariable - id : {} ",  MDC.get(Constants.CORRELATIONID) , id , id );
+        log.info("DEMO project  | Delete request for /api/users/{} | Request - pathVariable - id : {} ", id , id );
         userService.deleteUserById(id);
-        log.info("DEMO project | CorrelationId : {} | Delete request for /api/users/{} | Successfully deleted ",  MDC.get(Constants.CORRELATIONID) , id );
+        log.info("DEMO project  | Delete request for /api/users/{} | Successfully deleted ", id );
         return ResponseEntity.noContent().build();
     }
 }

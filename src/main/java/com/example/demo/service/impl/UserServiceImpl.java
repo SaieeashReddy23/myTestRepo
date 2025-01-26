@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
 
     public PaginatedResponseDTO<UserResponseDTO> getAllUsers(PageRequest pageable) {
-        log.info("DEMO project | CorrelationId : {} | processing request : {} ", MDC.get(Constants.CORRELATIONID) , pageable.toString());
+        log.info("DEMO project | processing request : {} ", pageable.toString());
         Page<User> usersPage = userRepository.findAll(pageable);
         List<UserResponseDTO> userDTOs = usersPage.getContent().stream()
                 .map( user -> {
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDTO getUserById(String id) {
-        log.info("DEMO project | CorrelationId : {} | processing id : {} ", MDC.get(Constants.CORRELATIONID) , id);
+        log.info("DEMO project | processing id : {} ", id);
         User user = userRepository.findById(id).orElse(null);
         if(user == null){
             return null;
@@ -59,13 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDTO createUser(User user) {
-        log.info("DEMO project | CorrelationId : {} | processing Request : {} ", MDC.get(Constants.CORRELATIONID) , user.toString());
+        log.info("DEMO project | processing Request : {} ", user.toString());
         User savedUser = userRepository.save(user);
         return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail() , savedUser.getAge());
     }
 
     public void deleteUserById(String id) {
-        log.info("DEMO project | CorrelationId : {} | processing id : {} ", MDC.get(Constants.CORRELATIONID) , id);
+        log.info("DEMO project | processing id : {} ", id);
         userRepository.deleteById(id);
     }
 
