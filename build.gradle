@@ -14,12 +14,15 @@ java {
 	}
 }
 
-repositories {
-	mavenCentral()
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
-ext {
-	set('snippetsDir', file("build/generated-snippets"))
+
+repositories {
+	mavenCentral()
 }
 
 dependencies {
@@ -27,8 +30,8 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // used for validating input req
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mapstruct:mapstruct:1.5.3.Final'  // for mapping objects
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'  // for annotation processing
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'  // for mapping objects
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'  // for annotation processing
 //	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0' // open api for swagger
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -41,17 +44,6 @@ dependencies {
 	testImplementation 'org.testcontainers:testcontainers:1.19.0'
 	testImplementation 'org.testcontainers:mongodb:1.19.0'
 }
-
-//tasks.named('test') {
-//	outputs.dir snippetsDir
-//	useJUnitPlatform()
-//}
-//
-//tasks.named('asciidoctor') {
-//	inputs.dir snippetsDir
-//	dependsOn test
-//}
-
 
 tasks.named('test') {
 	useJUnitPlatform()
