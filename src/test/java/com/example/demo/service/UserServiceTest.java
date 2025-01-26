@@ -5,6 +5,7 @@ import com.example.demo.dto.response.PaginatedResponseDTO;
 import com.example.demo.dto.response.UserResponseDTO;
 import com.example.demo.persistance.entity.User;
 import com.example.demo.persistance.repository.UserRepository;
+import com.example.demo.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +32,7 @@ class UserServiceTest {
     private UserMapper userMapper;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Test
     void testGetAllUsers() {
