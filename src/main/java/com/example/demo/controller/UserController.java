@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +41,7 @@ public class UserController {
     }
 
     // Get user by ID
+    @Cacheable(value = "apiResponses" , key = "#id")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
         log.info("DEMO project | Get request for /api/users/{} | Request - pathVariable - id : {} ", id , id );
@@ -46,21 +50,27 @@ public class UserController {
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
+    // Update a user
+    @CachePut(value = "apiResponses" , key = "#id")
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser( @PathVariable String id ,  @Valid @RequestBody UserRequestDTO userRequestDTO) {
+        log.info("DEMO project  | Put request for /api/users | Request - userId : {} , updatedUser {} ",id , userRequestDTO.toString() );
+        UserResponseDTO createdUser = userService.updateUser(id , userRequestDTO);
+        log.info("DEMO project  | Put request for /api/users | Response - {} ",  createdUser.toString() );
+        return ResponseEntity.ok(createdUser);
+    }
+
     // Create a new user
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
-        // Map UserRequest to User entity
-        User user = new User();
-        user.setName(userRequestDTO.getName());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setAge(userRequestDTO.getAge());
         log.info("DEMO project  | Post request for /api/users | Request - {} ",  userRequestDTO.toString() );
-        UserResponseDTO createdUser = userService.createUser(user);
+        UserResponseDTO createdUser = userService.createUser(userRequestDTO);
         log.info("DEMO project  | Get request for /api/users | Response - {} ",  createdUser.toString() );
         return ResponseEntity.ok(createdUser);
     }
 
     // Delete user by ID
+    @CacheEvict(value = "apiResponses" , key = "#id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable String id) {
         log.info("DEMO project  | Delete request for /api/users/{} | Request - pathVariable - id : {} ", id , id );

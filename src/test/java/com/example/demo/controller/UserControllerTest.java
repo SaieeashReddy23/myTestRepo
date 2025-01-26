@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import com.example.demo.dto.request.UserRequestDTO;
 import com.example.demo.dto.response.PaginatedResponseDTO;
 import com.example.demo.dto.response.UserResponseDTO;
 import com.example.demo.persistance.entity.User;
@@ -166,7 +167,7 @@ class UserControllerTest {
         // Given: mock data
         UserResponseDTO userResponseDTO = new UserResponseDTO("123","Sai","sai@gmail.com",25);
 
-        when(userService.createUser(any(User.class)))
+        when(userService.createUser(any(UserRequestDTO.class)))
                 .thenReturn(userResponseDTO);
 
         // When & Then: Perform the GET request and check the response
@@ -180,7 +181,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.age").value(25));
 
 
-        verify(userService).createUser(any(User.class));
+        verify(userService).createUser(any(UserRequestDTO.class));
 
     }
 

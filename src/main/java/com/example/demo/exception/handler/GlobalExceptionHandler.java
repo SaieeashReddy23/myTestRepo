@@ -1,9 +1,8 @@
-package com.example.demo.exceptionHandler;
+package com.example.demo.exception.handler;
 
-import com.example.demo.utils.Constants;
+import com.example.demo.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,4 +39,14 @@ public class GlobalExceptionHandler {
         log.error("DEMO project | fields with failed validation : {}", errors.toString());
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleConstraintViolationExceptions(UserNotFoundException ex) {
+        Map<String, String> errors = new HashMap<>();
+        log.error("DEMO project | Validation failed : {}" ,ex.getMessage() ,ex);
+        return ResponseEntity.badRequest().body("User not found for the id");
+    }
+
+
 }

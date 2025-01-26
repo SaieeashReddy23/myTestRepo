@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.mapper.UserMapper;
+import com.example.demo.dto.request.UserRequestDTO;
 import com.example.demo.dto.response.PaginatedResponseDTO;
 import com.example.demo.dto.response.UserResponseDTO;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.persistance.entity.User;
 import com.example.demo.persistance.repository.UserRepository;
 import com.example.demo.service.impl.UserServiceImpl;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -80,22 +83,24 @@ class UserServiceTest {
         String userId = "999";
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act
-        UserResponseDTO result = userService.getUserById(userId);
+        // Act & Assert
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+            userService.getUserById(userId);
+        });
 
-        // Assert
-        assertNull(result);
+        assertEquals("User not found with id: 999", exception.getMessage());
+        verify(userRepository, times(1)).findById(userId);
     }
 
     @Test
     void testCreateUser() {
         // Arrange
-        User newUser = new User(null, "John Doe", "john@example.com", 30);
+        UserRequestDTO userRequestDTO = new UserRequestDTO( "John Doe", "john@example.com", 30);
         User savedUser = new User("1", "John Doe", "john@example.com", 30);
-        when(userRepository.save(newUser)).thenReturn(savedUser);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         // Act
-        UserResponseDTO result = userService.createUser(newUser);
+        UserResponseDTO result = userService.createUser(userRequestDTO);
 
         // Assert
         assertNotNull(result);
